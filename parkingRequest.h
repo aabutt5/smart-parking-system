@@ -1,14 +1,23 @@
-#ifndef PARKINGREQUEST_H
-#define PARKINGREQUEST_H
-#include "ParkingSlot.h"
+#ifndef PARKINGSLOT_H
+#define PARKINGSLOT_H
 
-class ParkingRequest {
+// Define this OUTSIDE the class so the whole project can see it
+enum SlotStatus { AVAILABLE, ALLOCATED, OCCUPIED, RELEASED, CANCELLED };
+
+class ParkingSlot {
 public:
-    int vehicleID; // [cite: 129]
-    int requestedZone; // [cite: 130]
-    SlotStatus currentState; // [cite: 134]
+    int slotId;
+    int zoneId;
+    bool isAvailable;
 
-    ParkingRequest();
-    bool transitionTo(SlotStatus nextState); // Enforces state machine [cite: 143]
+    ParkingSlot();
+    ParkingSlot(int id, int z);
+
+    // You MUST declare these here to fix the "no member" errors in your image
+    int getSlotId() const;
+    int getZoneId() const;
+    bool getAvailability() const;
+    void allocate();
+    void release();
 };
 #endif
