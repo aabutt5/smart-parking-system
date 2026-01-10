@@ -1,20 +1,18 @@
-#include "ParkingRequest.h"
+#include "ParkingSlot.h"
 
-ParkingRequest::ParkingRequest() : vehicleID(-1), requestedZone(-1), currentState(REQUESTED) {}
+// Use the ParkingSlot:: prefix so the compiler knows these belong to the class
+ParkingSlot::ParkingSlot() : slotId(-1), zoneId(-1), isAvailable(true) {}
 
-bool ParkingRequest::transitionTo(SlotStatus nextState) {
-    // Logic to prevent invalid transitions [cite: 142]
-    if (currentState == REQUESTED && (nextState == ALLOCATED || nextState == CANCELLED)) {
-        currentState = nextState;
-        return true;
-    }
-    if (currentState == ALLOCATED && (nextState == OCCUPIED || nextState == CANCELLED)) {
-        currentState = nextState;
-        return true;
-    }
-    if (currentState == OCCUPIED && nextState == RELEASED) {
-        currentState = nextState;
-        return true;
-    }
-    return false; // Blocks invalid changes [cite: 143]
+ParkingSlot::ParkingSlot(int id, int z) : slotId(id), zoneId(z), isAvailable(true) {}
+
+int ParkingSlot::getSlotId() const {
+    return slotId;
+}
+
+int ParkingSlot::getZoneId() const {
+    return zoneId;
+}
+
+void ParkingSlot::allocate() {
+    isAvailable = false;
 }
