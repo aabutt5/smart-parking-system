@@ -1,0 +1,11 @@
+#ifndef ALLOCATIONENGINE_H
+#define ALLOCATIONENGINE_H
+#include "Zone.h"
+#include "ParkingSlot.h"
+
+class AllocationEngine {
+public:
+    // Implements same-zone preference and first-available strategy [cite: 146, 147]
+    ParkingSlot* allocate(Zone* zones, int zoneCount, int preferredZoneID);
+};
+#endif
