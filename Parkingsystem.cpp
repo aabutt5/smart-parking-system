@@ -39,4 +39,8 @@ void ParkingSystem::performRollback(int k) {
 
 ParkingSystem::~ParkingSystem() {
     delete[] zones; // Cleanup custom array
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 4e3bbd53271a4b781c66c402e09b4fb8057c680d
