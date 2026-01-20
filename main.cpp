@@ -1,37 +1,64 @@
 #include <iostream>
 #include "ParkingSystem.h"
 
+// Helper function to handle the Menu GUI
+void showMenu() {
+    std::cout << "\n====================================" << std::endl;
+    std::cout << "   SMART PARKING MANAGEMENT GUI    " << std::endl;
+    std::cout << "====================================" << std::endl;
+    std::cout << "1. Park Vehicle (Car, Bike, Jeep)" << std::endl;
+    std::cout << "2. Checkout & Generate Receipt" << std::endl;
+    std::cout << "3. View All Building Status" << std::endl;
+    std::cout << "4. Show System Analytics" << std::endl;
+    std::cout << "5. Exit" << std::endl;
+    std::cout << "Select an option: ";
+}
+
 int main() {
-    // Ali: Initializing city with 5 zones as per requirements
+    // Initialize with 5 buildings as per your requirement
     ParkingSystem city(5); 
+    int choice;
 
-    std::cout << "--- Starting Final 10 Mandatory Tests ---" << std::endl;
+    while (true) {
+        showMenu();
+        std::cin >> choice;
 
-    // 1. Test: State Machine - Valid Move (REQUESTED -> ALLOCATED)
-    ParkingRequest req1("ALI-01", "Zone_A");
-    city.processRequest(req1);
-    
-    // 2. Test: State Machine - Blocking Invalid Move (REQUESTED -> RELEASED)
-    // Ali: This must fail because the transition is not allowed
-    if (!req1.transitionTo(ParkingRequest::RELEASED)) {
-        std::cout << "[PASS] Test 2: Invalid transition blocked." << std::endl;
+        if (choice == 5) break;
+
+        switch (choice) {
+            case 1: {
+                char id[20], type[10], deal[10];
+                int preferredBuilding;
+                
+                std::cout << "Enter Vehicle ID: "; std::cin >> id;
+                std::cout << "Type (Car/Bike/Jeep): "; std::cin >> type;
+                std::cout << "Building Preference (1-5): "; std::cin >> preferredBuilding;
+                std::cout << "Deal (None/Weekly/Monthly): "; std::cin >> deal;
+
+                // Process request - Auto-redirects if building is full
+                ParkingRequest req(id, preferredBuilding, type, deal);
+                city.processRequest(req);
+                break;
+            }
+            case 2: {
+                char id[20];
+                int hours;
+                std::cout << "Enter Vehicle ID for checkout: "; std::cin >> id;
+                std::cout << "Total stay duration (hours): "; std::cin >> hours;
+                
+                // Generates 20 PKR for Bike, 100 PKR for Car/Jeep
+                city.generateReceipt(id, hours);
+                break;
+            }
+            case 3:
+                city.displayBuildingStatus(); // Shows which buildings are full
+                break;
+            case 4:
+                city.showAnalytics();
+                break;
+            default:
+                std::cout << "Invalid choice! Please try again." << std::endl;
+        }
     }
-
-    // 3. Test: Successful Allocation in Preferred Zone
-    // 4. Test: Cross-Zone Penalty (Searching next available zone)
-    
-    // 5. Test: Rollback System - Undo (K=1)
-    // 6. Test: Rollback System - Multiple Undos (K=2)
-    city.performRollback(2);
-    std::cout << "[PASS] Test 6: Rollback K=2 successful." << std::endl;
-
-    // 7. Test: Analytics - Utilization Rate (%)
-    // 8. Test: Analytics - Average Parking Duration
-    city.showAnalytics();
-
-    // 9. Test: Custom Data Structure - Array/Linked List verification
-    // 10. Test: Memory Management - Destructor execution
-    
-    std::cout << "--- All Requirements Met. Ready for Submission! ---" << std::endl;
     return 0;
 }
